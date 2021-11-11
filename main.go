@@ -6,7 +6,7 @@ import (
 )
 
 type people struct {
-	Number int `json: "number"` // Number is an annotation - capal leter marks it as exportable or public
+	Number int `json: "number"` // Number is an annotation - capal leter marks it as exportable or public https://www.geeksforgeeks.org/pointer-to-a-struct-in-golang/
 }
 
 func main() {
