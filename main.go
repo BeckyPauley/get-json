@@ -29,6 +29,8 @@ func main() {
 	req.Header.Set("UserAgent", "spacecount-tutorial")
 
 	res, err := spaceClient.Do(req)
+	fmt.Printf("HTTP status: %s\n", res.Status)
+
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -46,6 +48,8 @@ func main() {
 	err = json.Unmarshal(body, &p) // &p passes the value of the empty struct to the method, without the & it will use a different copy of the empty struct
 	if err != nil {
 		log.Fatal(err)
+		log.Fatalf("unable to parse value: %q, error: %s",
+			string(body), err.Error())
 	}
 	fmt.Println(p.Number)
 }
