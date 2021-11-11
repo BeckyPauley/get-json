@@ -3,6 +3,10 @@ package main
 import (
 	"encoding/json"
 	"fmt"
+	"io/ioutil"
+	"log"
+	"net/http"
+	"time"
 )
 
 type people struct {
@@ -10,17 +14,38 @@ type people struct {
 }
 
 func main() {
-	text := `{"people": [{"craft": "ISS", "name": "Sergey Rizhikov"}, {"craft": "ISS",
-	"name": "Andrey Borisenko"}, {"craft": "ISS", "name": "Shane Kimbrough"}, {"craft":
-	"ISS", "name": "Oleg Novitskiy"}, {"craft": "ISS", "name": "Thomas Pesquet"}, {"craft":
-	"ISS", "name": "Peggy Whitson"}], "message": "success", "number": 6}`
-	textBytes := []byte(text) // text variable --> type byte (stored in textBytes variable) as json.Unmarshal() takes type byte.
+
+	url := "http://api.open-notify.org/astros.json"
+
+	spaceClient := http.Client{
+		Timeout: time.Second * 2, // timeout fter 2 seconds
+	}
+
+	req, err := http.NewRequest(http.MethodGet, url, nil)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	req.Header.Set("UserAgent", "spacecount-tutorial")
+
+	res, err := spaceClient.Do(req)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	if res.Body != nil {
+		defer res.Body.Close()
+	}
+
+	body, err := ioutil.ReadAll(res.Body)
+	if err != nil {
+		log.Fatal(err)
+	}
 
 	p := people{}
-	err := json.Unmarshal(textBytes, &p) // &p passes the value of the empty struct to the method, without the & it will use a different copy of the empty struct
+	err = json.Unmarshal(body, &p) // &p passes the value of the empty struct to the method, without the & it will use a different copy of the empty struct
 	if err != nil {
-		fmt.Println(err)
-		return
+		log.Fatal(err)
 	}
 	fmt.Println(p.Number)
 }
