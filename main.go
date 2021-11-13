@@ -8,19 +8,26 @@ import (
 	"net/http"
 )
 
+type person struct {
+	Name string `json:"name"`
+}
+
 type people struct {
-	Number int `json: "number"` // Number is an annotation - capal leter marks it as exportable or public https://www.geeksforgeeks.org/pointer-to-a-struct-in-golang/
+	Number int      `json:"number"`
+	Person []person `json:"people"`
 }
 
 func main() {
-
-	apiUrl := "http://api.open-notify.org/astros.json"
-
-	people, err := getAstros(apiUrl)
+	apiURL := "http://api.open-notify.org/astros.json"
+	people, err := getAstros(apiURL)
 	if err != nil {
 		log.Fatal(err)
 	}
 	fmt.Printf("%d people found in space.\n", people.Number)
+
+	for _, p := range people.Person {
+		fmt.Printf("Let's wave to: %s\n", p.Name)
+	}
 }
 
 func getAstros(apiUrl string) (people, error) {
