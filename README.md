@@ -10,7 +10,7 @@ Marshalling (object --> text or binary)/unmarshalling (text --> object) more inf
 Declare struct e.g:
 ```
 type people struct {
-	Number int `json: "number"` 
+	Number int `json:"number"` 
 } 
 ```
 Number is an annotation - capital letter marks it as exportable or public. 
@@ -20,6 +20,8 @@ Using pointers - https://www.geeksforgeeks.org/pointer-to-a-struct-in-golang/
 User-Agent Header - allows a site to understand what sort of ttraffic it's receiving. 
 
 robots.txt - tells a search engine files a crawler can/can't access from site. https://developers.google.com/search/docs/advanced/robots/intro  
+
+I learned spacing is important when declaring a struct e.g. `json:"number"` not `json: "number"` 
 
 ### Revisit later:
 
